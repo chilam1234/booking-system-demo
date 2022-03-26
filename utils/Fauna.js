@@ -45,7 +45,7 @@ const getBookingsByUser = async (userId) => {
   return bookings
 }
 
-const isTimeOccupied = async (time, room) => {
+const isTimeOccupied = async (time, room, id) => {
   const { data } = await faunaClient.query(
     q.Paginate(
       q.Intersection(
@@ -69,7 +69,10 @@ const isTimeOccupied = async (time, room) => {
       ),
     ),
   )
-  console.log('triggered', data)
+  if (id && data.length === 1 && data[0]?.id === id) {
+    console.log('triggered')
+    return false
+  }
 
   return data.length > 0
 }
@@ -92,7 +95,7 @@ const createBooking = async ({ start, end, room, remarks, userId }) => {
 }
 
 const updateBooking = async ({ id, start, end, room, remarks, userId }) => {
-  if (await isTimeOccupied([start, end], room)) {
+  if (await isTimeOccupied([start, end], room, id)) {
     throw new Error('Time is already occupied')
   }
   return await faunaClient.query(
