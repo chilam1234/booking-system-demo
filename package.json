@@ -13,6 +13,7 @@
         "@mantine/dates": "^4.0.8",
         "@mantine/hooks": "^4.0.8",
         "@mantine/next": "^4.0.8",
+        "@mantine/notifications": "^4.0.8",
         "dayjs": "^1.11.0",
         "faunadb": "^3.0.1",
         "next": "^11.1.4",

@@ -1,10 +1,13 @@
 import { createBooking } from '../../utils/Fauna'
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
+import checkRole from '../../utils/checkRole'
 
 export default withApiAuthRequired(async function handler(req, res) {
   const session = getSession(req, res)
   const userId = session.user.sub
+  console.log('session user', session)
   const { time, room, remarks } = req.body
+  checkRole(session.user, res, room)
   if (req.method !== 'POST') {
     return res.status(405).json({ msg: 'Method not allowed' })
   }

@@ -17,6 +17,11 @@ export default function Navbar() {
               My bookings
             </a>
           </Link>
+          <Link href="/new">
+            <a className="text-grey-800 hover:text-blue-800 mb-3">
+              Create Booking
+            </a>
+          </Link>
           <Link href="/api/auth/logout">
             <a className="text-grey-800 hover:text-blue-800">Logout</a>
           </Link>

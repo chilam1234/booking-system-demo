@@ -1,13 +1,17 @@
 import { updateBooking, getBookingById } from '../../utils/Fauna'
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0'
+import checkRole from '../../utils/checkRole'
+
 export default withApiAuthRequired(async function handler(req, res) {
   const session = getSession(req, res)
   const userId = session.user.sub
+
   if (req.method !== 'PUT') {
     return res.status(405).json({ msg: 'Method not allowed' })
   }
 
   const { id, time, room, remarks } = req.body
+  checkRole(session.user, res, room)
   const existingRecord = await getBookingById(id)
   if (!existingRecord || existingRecord.data.userId !== userId) {
     res.statusCode = 404

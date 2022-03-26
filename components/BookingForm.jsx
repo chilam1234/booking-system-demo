@@ -5,8 +5,11 @@ import Link from "next/link";
 import { useCallback } from "react";
 import { TimeRangeInput } from "@mantine/dates";
 import { Button } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
 
 export default function BookingForm({ booking }) {
+  const notifications = useNotifications();
+
   const { register, handleSubmit, errors, control } = useForm({
     defaultValues: {
       time: booking ? booking.data.time : [new Date(), new Date()],
@@ -19,31 +22,52 @@ export default function BookingForm({ booking }) {
   const createBooking = useCallback(async (data) => {
     const { time, room, remarks } = data;
     try {
-      await fetch("/api/createBooking", {
+      const response = await fetch("/api/createBooking", {
         method: "POST",
         body: JSON.stringify({ time, room, remarks }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      router.push("/");
+      if (response.ok) {
+        router.push("/");
+      } else {
+        notifications.showNotification({
+          title: "Cannot Create Booking",
+          message: response.statusText,
+        });
+      }
     } catch (err) {
-      console.error(err);
+      notifications.showNotification({
+        title: "Cannot Create Booking",
+        message: err,
+      });
     }
   }, []);
 
   const deleteBooking = useCallback(async () => {
     try {
-      await fetch("/api/deleteBooking", {
+      const response = await fetch("/api/deleteBooking", {
         method: "DELETE",
         body: JSON.stringify({ id: booking.id }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      router.push("/");
+      if (response.ok) {
+        router.push("/");
+      } else {
+        notifications.showNotification({
+          title: "Cannot delete Booking",
+          message: response.statusText,
+        });
+      }
     } catch (err) {
       console.error(err);
+      notifications.showNotification({
+        title: "Cannot Delete Booking",
+        message: err,
+      });
     }
   }, [booking]);
 
@@ -52,15 +76,26 @@ export default function BookingForm({ booking }) {
       const { time, room, remarks } = data;
       const id = booking.id;
       try {
-        await fetch("/api/updateBooking", {
+        const response = await fetch("/api/updateBooking", {
           method: "PUT",
           body: JSON.stringify({ id, time, room, remarks }),
           headers: {
             "Content-Type": "application/json",
           },
         });
-        router.push("/");
+        if (response.ok) {
+          router.push("/");
+        } else {
+          notifications.showNotification({
+            title: "Cannot Update Booking",
+            message: response.statusText,
+          });
+        }
       } catch (err) {
+        notifications.showNotification({
+          title: "Cannot Update Booking",
+          message: err,
+        });
         console.error(err);
       }
     },
