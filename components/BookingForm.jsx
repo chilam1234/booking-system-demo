@@ -3,16 +3,20 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useCallback } from "react";
-import { TimeRangeInput } from "@mantine/dates";
+import { TimeInput } from "@mantine/dates";
 import { Button } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
+import { validationsSchema } from "../utils/formValidation";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function BookingForm({ booking }) {
   const notifications = useNotifications();
 
-  const { register, handleSubmit, errors, control } = useForm({
+  const { register, handleSubmit, control } = useForm({
+    resolver: yupResolver(validationsSchema),
     defaultValues: {
-      time: booking ? booking.data.time : [new Date(), new Date()],
+      start: new Date(booking?.data?.start),
+      end: new Date(booking?.data?.end),
       room: booking ? booking.data.room : "c1",
       remarks: booking ? booking.data.remarks : "",
     },
@@ -20,11 +24,11 @@ export default function BookingForm({ booking }) {
   const router = useRouter();
 
   const createBooking = useCallback(async (data) => {
-    const { time, room, remarks } = data;
+    const { start, end, room, remarks } = data;
     try {
       const response = await fetch("/api/createBooking", {
         method: "POST",
-        body: JSON.stringify({ time, room, remarks }),
+        body: JSON.stringify({ start, end, room, remarks }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -73,12 +77,12 @@ export default function BookingForm({ booking }) {
 
   const updateBooking = useCallback(
     async (data) => {
-      const { time, room, remarks } = data;
+      const { start, end, room, remarks } = data;
       const id = booking.id;
       try {
         const response = await fetch("/api/updateBooking", {
           method: "PUT",
-          body: JSON.stringify({ id, time, room, remarks }),
+          body: JSON.stringify({ id, start, end, room, remarks }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -115,7 +119,11 @@ export default function BookingForm({ booking }) {
   });
 
   return (
-    <form onSubmit={handleSubmit(booking ? updateBooking : createBooking)}>
+    <form
+      onSubmit={handleSubmit(booking ? updateBooking : createBooking, (err) =>
+        console.log(err)
+      )}
+    >
       <div className="mb-4">
         <label
           className="block text-red-100 text-sm font-bold mb-1"
@@ -125,22 +133,42 @@ export default function BookingForm({ booking }) {
         </label>
         <Controller
           control={control}
-          name="time"
+          name="start"
           rules={[{ required: true }]}
           render={({ field: { onChange, ref }, fieldState: { error } }) => (
             <>
-              <TimeRangeInput
-                type="text"
+              <TimeInput
+                label="Start"
                 id="time"
-                defaultValue={[
-                  new Date(booking?.data?.time[0]),
-                  new Date(booking?.data?.time[1]),
-                ]}
+                defaultValue={
+                  booking?.data?.start ? new Date(booking?.data?.start) : ""
+                }
                 onChange={onChange}
                 ref={ref}
               />
               {error && (
-                <p className="font-bold text-red-900">Time is required</p>
+                <p className="font-bold text-red-600">{error.message}</p>
+              )}
+            </>
+          )}
+        />
+        <Controller
+          control={control}
+          name="end"
+          rules={[{ required: true }]}
+          render={({ field: { onChange, ref }, fieldState: { error } }) => (
+            <>
+              <TimeInput
+                id="end"
+                label="End"
+                defaultValue={
+                  booking?.data?.end ? new Date(booking?.data?.end) : ""
+                }
+                onChange={onChange}
+                ref={ref}
+              />
+              {error && (
+                <p className="font-bold text-red-600">{error.message}</p>
               )}
             </>
           )}

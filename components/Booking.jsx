@@ -15,10 +15,7 @@ export default function Booking({ booking }) {
           Room - {booking.data.room}
         </h2>
         <TimeRangeInput
-          value={[
-            new Date(booking?.data?.time?.[0]),
-            new Date(booking?.data?.time?.[1]),
-          ]}
+          value={[new Date(booking?.data?.start), new Date(booking?.data?.end)]}
           readOnly
         />
       </div>

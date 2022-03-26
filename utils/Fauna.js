@@ -24,8 +24,9 @@ const getBookingById = async (id) => {
     q.Get(q.Ref(q.Collection('bookings'), id)),
   )
   booking.id = booking.ref.id
-  delete booking.ref
-  return booking
+  const { ref, ...noRefBooking } = booking
+  console.log(noRefBooking)
+  return noRefBooking
 }
 
 const getBookingsByUser = async (userId) => {
@@ -44,18 +45,59 @@ const getBookingsByUser = async (userId) => {
   return bookings
 }
 
-const createBooking = async (time, room, remarks, userId) => {
+const isTimeOccupied = async (time, room) => {
+  const { data } = await faunaClient.query(
+    q.Paginate(
+      q.Intersection(
+        q.Join(
+          q.Range(
+            q.Match(q.Index('bookings_by_start')),
+            q.Time(time[0]),
+            q.Time(time[1]),
+          ),
+          q.Lambda(['start', 'ref'], q.Match('tracks_by_ref', q.Var('ref'))),
+        ),
+        q.Join(
+          q.Range(
+            q.Match(q.Index('bookings_by_end')),
+            q.Time(time[0]),
+            q.Time(time[1]),
+          ),
+          q.Lambda(['start', 'ref'], q.Match('tracks_by_ref', q.Var('ref'))),
+        ),
+        q.Match(q.Index('booking_by_room'), room),
+      ),
+    ),
+  )
+  console.log('triggered', data)
+
+  return data.length > 0
+}
+
+const createBooking = async ({ start, end, room, remarks, userId }) => {
+  if (await isTimeOccupied([start, end], room)) {
+    throw new Error('Time is already occupied')
+  }
   return await faunaClient.query(
     q.Create(q.Collection('bookings'), {
-      data: { time, room, remarks, userId },
+      data: {
+        start,
+        end,
+        room,
+        remarks,
+        userId,
+      },
     }),
   )
 }
 
-const updateBooking = async (id, time, room, remarks, userId) => {
+const updateBooking = async ({ id, start, end, room, remarks, userId }) => {
+  if (await isTimeOccupied([start, end], room)) {
+    throw new Error('Time is already occupied')
+  }
   return await faunaClient.query(
     q.Update(q.Ref(q.Collection('bookings'), id), {
-      data: { time, room, remarks, userId },
+      data: { start, end, room, remarks, userId },
     }),
   )
 }

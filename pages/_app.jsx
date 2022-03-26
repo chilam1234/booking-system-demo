@@ -12,6 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import NextNProgress from "nextjs-progressbar";
 import { useState } from "react";
 import Head from "next/head";
 
@@ -71,6 +72,7 @@ function MyApp({ Component, pageProps }) {
               <title>Booking Demo</title>
               <link rel="icon" href="/favicon.ico" />
             </Head>
+            <NextNProgress />
             <Component {...pageProps} />
           </AppShell>
         </UserProvider>

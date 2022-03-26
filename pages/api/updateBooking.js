@@ -10,7 +10,7 @@ export default withApiAuthRequired(async function handler(req, res) {
     return res.status(405).json({ msg: 'Method not allowed' })
   }
 
-  const { id, time, room, remarks } = req.body
+  const { id, start, end, room, remarks } = req.body
   checkRole(session.user, res, room)
   const existingRecord = await getBookingById(id)
   if (!existingRecord || existingRecord.data.userId !== userId) {
@@ -19,10 +19,20 @@ export default withApiAuthRequired(async function handler(req, res) {
   }
 
   try {
-    const updated = await updateBooking(id, time, room, remarks, userId)
+    const updated = await updateBooking({
+      id,
+      start,
+      end,
+      room,
+      remarks,
+      userId,
+    })
     return res.status(200).json(updated)
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ msg: 'Something went wrong.' })
+    if (err.message === 'Time is already occupied') {
+      res.status(400).json({ msg: 'Time has already been booked.' })
+    } else {
+      res.status(500).json({ msg: 'Something went wrong.' })
+    }
   }
 })

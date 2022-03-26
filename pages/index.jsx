@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Booking from "../components/Booking";
 import useSWR from "swr";
 
