@@ -1,12 +1,12 @@
 import React from "react";
-import { useForm, useWatch, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useCallback } from "react";
 import { TimeRangeInput } from "@mantine/dates";
+import { Button } from "@mantine/core";
 
 export default function BookingForm({ booking }) {
-  console.log(booking);
   const { register, handleSubmit, errors, control } = useForm({
     defaultValues: {
       time: booking ? booking.data.time : [new Date(), new Date()],
@@ -14,9 +14,6 @@ export default function BookingForm({ booking }) {
       remarks: booking ? booking.data.remarks : "",
     },
   });
-
-  const ok = useWatch({ control });
-  console.log(ok);
   const router = useRouter();
 
   const createBooking = useCallback(async (data) => {
@@ -72,10 +69,10 @@ export default function BookingForm({ booking }) {
   const RoomOptions = new Array(10).fill("").map((_, i) => {
     return (
       <>
-        <option key={`c${i}`} value={`c${i + 1}`}>
+        <option key={`c${i + 1}`} value={`c${i + 1}`}>
           c{i + 1}
         </option>
-        <option key={`p${i}`} value={`p${i + 1}`}>
+        <option key={`p${i + 1}`} value={`p${i + 1}`}>
           p{i + 1}
         </option>
       </>
@@ -95,23 +92,24 @@ export default function BookingForm({ booking }) {
           control={control}
           name="time"
           rules={[{ required: true }]}
-          render={({ field: { onChange, ref } }) => (
-            <TimeRangeInput
-              type="text"
-              id="time"
-              defaultValue={[
-                new Date(booking?.data?.time[0]),
-                new Date(booking?.data?.time[1]),
-              ]}
-              onChange={onChange}
-              ref={ref}
-            />
+          render={({ field: { onChange, ref }, fieldState: { error } }) => (
+            <>
+              <TimeRangeInput
+                type="text"
+                id="time"
+                defaultValue={[
+                  new Date(booking?.data?.time[0]),
+                  new Date(booking?.data?.time[1]),
+                ]}
+                onChange={onChange}
+                ref={ref}
+              />
+              {error && (
+                <p className="font-bold text-red-900">Time is required</p>
+              )}
+            </>
           )}
         />
-
-        {errors?.time && (
-          <p className="font-bold text-red-900">Time is required</p>
-        )}
       </div>
       <div className="mb-4">
         <label
@@ -125,24 +123,26 @@ export default function BookingForm({ booking }) {
           control={control}
           name="room"
           rules={[{ required: true }]}
-          render={({ field: { onChange } }) => (
-            <select
-              defaultValue={booking?.data?.room ?? "c1"}
-              onChange={onChange}
-              className="w-full border bg-white rounded px-3 py-2 outline-none text-gray-700"
-            >
-              {RoomOptions}
-            </select>
+          render={({ field: { onChange }, fieldState: { error } }) => (
+            <>
+              <select
+                defaultValue={booking?.data?.room ?? "c1"}
+                onChange={onChange}
+                className="w-full border bg-white rounded px-3 py-2 outline-none text-gray-700"
+              >
+                {RoomOptions}
+              </select>
+              {error && (
+                <p className="font-bold text-red-900">Room is required</p>
+              )}
+            </>
           )}
         />
-        {errors?.room && (
-          <p className="font-bold text-red-900">Room is required</p>
-        )}
       </div>
       <div className="mb-4">
         <label
           className="block text-red-100 text-sm font-bold mb-1"
-          htmlFor="description"
+          htmlFor="remarks"
         >
           Remarks
         </label>
@@ -151,30 +151,42 @@ export default function BookingForm({ booking }) {
           id="remarks"
           rows="3"
           className="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-          placeholder="What does the booking do?"
+          placeholder="remarks for your booking"
           {...register("remarks", { required: false })}
         ></textarea>
       </div>
-      <button
-        className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-        type="submit"
-      >
-        Save
-      </button>
-      <Link href="/">
-        <a className="mt-3 inline-block bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">
-          Cancel
-        </a>
-      </Link>
-      {booking && (
-        <button
-          className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-          type="button"
-          onClick={deleteBooking}
-        >
-          Delete
-        </button>
-      )}
+
+      <div className="flex items-center justify-between">
+        <div>
+          <Button
+            variant="gradient"
+            gradient={{ from: "indigo", to: "cyan" }}
+            type="submit"
+            size="md"
+            className="mr-3"
+          >
+            Save
+          </Button>
+          <Link href="/" passHref>
+            <Button component="a" size="md" variant="outline">
+              Cancel
+            </Button>
+          </Link>
+        </div>
+
+        {booking && (
+          <Button
+            variant="gradient"
+            gradient={{ from: "red", to: "dark" }}
+            size="md"
+            className="mr-2"
+            type="button"
+            onClick={deleteBooking}
+          >
+            Delete
+          </Button>
+        )}
+      </div>
     </form>
   );
 }

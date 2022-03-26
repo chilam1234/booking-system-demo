@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { getBookingById } from '../../utils/Fauna'
 import BookingForm from '../../components/BookingForm'
+import { Title } from '@mantine/core'
 
 export default function Home({ booking }) {
   return (
@@ -11,7 +12,7 @@ export default function Home({ booking }) {
       </Head>
 
       <main className="max-w-lg mx-auto">
-        <h1 className="text-red-100 text-2xl mb-4">Update your Booking</h1>
+        <Title order={1}>Update your Booking</Title>
         <BookingForm booking={booking} />
       </main>
     </div>

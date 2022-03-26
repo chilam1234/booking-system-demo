@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
-import Link from 'next/link'
-import { useUser } from '@auth0/nextjs-auth0'
-import { TimeRangeInput } from '@mantine/dates'
+import Link from "next/link";
+import { useUser } from "@auth0/nextjs-auth0";
+import { TimeRangeInput } from "@mantine/dates";
 
 export default function Booking({ booking }) {
-  const { user } = useUser()
-  console.log(user, booking)
+  const { user } = useUser();
+  console.log(user, booking);
 
   return (
     <div className="bg-gray-100 p-4 rounded-md my-2 shadow-lg">
@@ -22,6 +22,7 @@ export default function Booking({ booking }) {
           readOnly
         />
       </div>
+      <h3 className="text-md text-gray-800 font-bold mb-2">Remarks</h3>
       <p className="text-gray-900 mb-4">{booking.data.remarks}</p>
       {user && user.sub === booking.data.userId && (
         <Link href={`/edit/${booking.id}`}>
@@ -29,5 +30,5 @@ export default function Booking({ booking }) {
         </Link>
       )}
     </div>
-  )
+  );
 }
