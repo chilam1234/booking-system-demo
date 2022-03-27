@@ -1,8 +1,7 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import Link from "next/link";
-export default function Navbar() {
-  const { user, isLoading } = useUser();
+
+export default function Navbar({ user, isLoading }) {
   return (
     <>
       {!isLoading && !user && (

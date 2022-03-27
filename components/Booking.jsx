@@ -1,13 +1,10 @@
 import React from "react";
 
 import Link from "next/link";
-import { useUser } from "@auth0/nextjs-auth0";
+
 import { TimeRangeInput } from "@mantine/dates";
 
-export default function Booking({ booking }) {
-  const { user } = useUser();
-  console.log(user, booking);
-
+export default function Booking({ booking, user }) {
   return (
     <div className="bg-gray-100 p-4 rounded-md my-2 shadow-lg">
       <div className="flex items-center justify-between mb-2">
