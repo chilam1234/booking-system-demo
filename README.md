@@ -1,6 +1,12 @@
 # booking-system-demo
 
-Source code for the Demo Purpose
+Source code for the Demo Purpose, a one day booking system
+[demo](https://booking-system-demo.vercel.app/)
+
+## Tech use:
+1. Fauna DB
+2. NextJs
+3. Auth0
 
 ## Getting Started
 
@@ -31,7 +37,12 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Docker Build
+1. create `.env.development` to store the env for build
+2. run `docker-compose up`
+
+
 ## ToDo:
-1. add more features: sorting, filtering
+1. add more features: sorting, filtering,...and many more
 2. change to TS
 3. tests on backend
