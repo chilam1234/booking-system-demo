@@ -4,7 +4,7 @@ import { useMemo, useRef, useEffect, useCallback } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useRouter } from "next/router";
 
-export default function MyCalendar({ bookings }) {
+export default function MyCalendar({ bookings, user }) {
   const router = useRouter();
   const events = useMemo(
     () =>
@@ -68,7 +68,7 @@ export default function MyCalendar({ bookings }) {
         timeslots={2}
         titleAccessor="remarks"
         onSelectSlot={onSelectSlot}
-        selectable={"ignoreEvents"}
+        selectable={user ? "ignoreEvents" : false}
       />
     </div>
   );

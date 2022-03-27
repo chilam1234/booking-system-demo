@@ -6,10 +6,11 @@ import { WithUser } from "../components/HOC/withUser";
 export default function Home() {
   const { data: bookings } = useSWR("/api/bookings");
   const BookingWithUser = WithUser(Booking);
+  const MyCalendarWithUser = WithUser(MyCalendar);
   return (
     <div>
       <main className="">
-        <MyCalendar bookings={bookings} />
+        <MyCalendarWithUser bookings={bookings} />
         {bookings &&
           bookings.map((booking) => (
             <BookingWithUser key={booking.id} booking={booking} />
