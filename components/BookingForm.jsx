@@ -1,6 +1,5 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { useCallback } from "react";
 import { TimeInput } from "@mantine/dates";
@@ -8,25 +7,31 @@ import { Button } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { validationsSchema } from "../utils/formValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useRouter } from "next/router";
 export default function BookingForm({
   booking,
+  newBooking,
   createBookingCb,
   updateBookingCb,
   deleteBookingCb,
 }) {
+  console.log(newBooking);
+  const router = useRouter();
   const notifications = useNotifications();
 
   const { register, handleSubmit, control } = useForm({
     resolver: yupResolver(validationsSchema),
     defaultValues: {
-      start: new Date(booking?.data?.start),
-      end: new Date(booking?.data?.end),
-      room: booking ? booking.data.room : "c1",
+      start: new Date(
+        booking?.data?.start ? booking?.data?.start : newBooking?.start ?? ""
+      ),
+      end: new Date(
+        booking?.data?.end ? booking?.data?.end : newBooking?.end ?? ""
+      ),
+      room: booking ? booking.data.room : newBooking?.room ?? "c1",
       remarks: booking ? booking.data.remarks : "",
     },
   });
-  const router = useRouter();
 
   const createBooking = useCallback(
     async (data) => {
@@ -128,7 +133,11 @@ export default function BookingForm({
                 label="Start"
                 id="time"
                 defaultValue={
-                  booking?.data?.start ? new Date(booking?.data?.start) : ""
+                  booking?.data?.start
+                    ? new Date(booking?.data?.start)
+                    : newBooking?.start
+                    ? new Date(newBooking?.start)
+                    : ""
                 }
                 onChange={onChange}
                 ref={ref}
@@ -149,7 +158,11 @@ export default function BookingForm({
                 id="end"
                 label="End"
                 defaultValue={
-                  booking?.data?.end ? new Date(booking?.data?.end) : ""
+                  booking?.data?.end
+                    ? new Date(booking.data.end)
+                    : newBooking?.end
+                    ? new Date(newBooking?.end)
+                    : ""
                 }
                 onChange={onChange}
                 ref={ref}
@@ -176,7 +189,11 @@ export default function BookingForm({
           render={({ field: { onChange }, fieldState: { error } }) => (
             <>
               <select
-                defaultValue={booking?.data?.room ?? "c1"}
+                defaultValue={
+                  booking?.data?.room
+                    ? booking?.data?.room
+                    : newBooking?.room ?? "c1"
+                }
                 onChange={onChange}
                 className="w-full border bg-white rounded px-3 py-2 outline-none text-gray-700"
               >

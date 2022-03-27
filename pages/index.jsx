@@ -1,4 +1,5 @@
 import Booking from "../components/Booking";
+import MyCalendar from "../components/Calendar";
 import useSWR from "swr";
 import { WithUser } from "../components/HOC/withUser";
 
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <div>
       <main className="">
+        <MyCalendar bookings={bookings} />
         {bookings &&
           bookings.map((booking) => (
             <BookingWithUser key={booking.id} booking={booking} />
