@@ -25,6 +25,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.28.1",
     "swr": "^0.3.8",
+    "whatwg-fetch": "^3.6.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -33,6 +34,8 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "jest": "^27.5.1",
+    "msw": "^0.39.2",
+    "next-router-mock": "^0.6.5",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.9.6"
   }

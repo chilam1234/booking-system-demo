@@ -1,6 +1,7 @@
 import BookingForm from "../components/BookingForm";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Title } from "@mantine/core";
+import { createBooking } from "../actions";
 
 export default function New() {
   return (
@@ -9,7 +10,7 @@ export default function New() {
         <Title order={3} className="mt-3">
           New Booking
         </Title>
-        <BookingForm />
+        <BookingForm createBookingCb={createBooking} />
       </main>
     </div>
   );

@@ -9,7 +9,12 @@ import { useNotifications } from "@mantine/notifications";
 import { validationsSchema } from "../utils/formValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function BookingForm({ booking }) {
+export default function BookingForm({
+  booking,
+  createBookingCb,
+  updateBookingCb,
+  deleteBookingCb,
+}) {
   const notifications = useNotifications();
 
   const { register, handleSubmit, control } = useForm({
@@ -24,29 +29,23 @@ export default function BookingForm({ booking }) {
   const router = useRouter();
 
   const createBooking = useCallback(async (data) => {
-    const { start, end, room, remarks } = data;
-    try {
-      const response = await fetch("/api/createBooking", {
-        method: "POST",
-        body: JSON.stringify({ start, end, room, remarks }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
+    console.log(data);
+    await createBookingCb(
+      data,
+      () => {
         router.push("/");
-      } else {
+        notifications.showNotification({
+          title: "Created the booking",
+          color: "blue",
+        });
+      },
+      (err) => {
         notifications.showNotification({
           title: "Cannot Create Booking",
-          message: response.statusText,
+          message: `${err.msg ?? err}`,
         });
       }
-    } catch (err) {
-      notifications.showNotification({
-        title: "Cannot Create Booking",
-        message: err,
-      });
-    }
+    );
   }, []);
 
   const deleteBooking = useCallback(async () => {
@@ -60,12 +59,17 @@ export default function BookingForm({ booking }) {
       });
       if (response.ok) {
         router.push("/");
-      } else {
         notifications.showNotification({
-          title: "Cannot delete Booking",
-          message: response.statusText,
+          title: "Deleted the booking",
+          color: "blue",
         });
+        return;
       }
+      const err = await response.json();
+      notifications.showNotification({
+        title: "Cannot Delete Booking",
+        message: `${response.statusText}: ${err.msg}`,
+      });
     } catch (err) {
       console.error(err);
       notifications.showNotification({
@@ -88,13 +92,18 @@ export default function BookingForm({ booking }) {
           },
         });
         if (response.ok) {
-          router.push("/");
-        } else {
           notifications.showNotification({
-            title: "Cannot Update Booking",
-            message: response.statusText,
+            title: "Updated the booking",
+            color: "blue",
           });
+          router.push("/");
+          return;
         }
+        const err = await response.json();
+        notifications.showNotification({
+          title: "Cannot Update Booking",
+          message: `${response.statusText}: ${err.msg}`,
+        });
       } catch (err) {
         notifications.showNotification({
           title: "Cannot Update Booking",

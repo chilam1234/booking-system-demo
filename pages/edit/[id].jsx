@@ -2,13 +2,18 @@ import Head from "next/head";
 import { getBookingById } from "../../utils/Fauna";
 import BookingForm from "../../components/BookingForm";
 import { Title } from "@mantine/core";
+import { updateBooking, deleteBooking } from "../../actions";
 
 export default function Home({ booking }) {
   return (
     <div>
       <main className="max-w-lg mx-auto">
         <Title order={1}>Update your Booking</Title>
-        <BookingForm booking={booking} />
+        <BookingForm
+          booking={booking}
+          updateBookingCb={updateBooking}
+          deleteBookingCb={deleteBooking}
+        />
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 import Booking from "../Booking";
-import { logRoles, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 describe("Booking", () => {
   describe("when there are bookings and user is logged in but no user's bookings", () => {
     it("should render the booking details correctly but no edit", () => {
