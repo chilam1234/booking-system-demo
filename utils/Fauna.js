@@ -46,6 +46,7 @@ const getBookingsByUser = async (userId) => {
 }
 
 const isTimeOccupied = async (time, room, id) => {
+  console.log(time[0], time[1])
   const { data } = await faunaClient.query(
     q.Paginate(
       q.Intersection(
@@ -63,12 +64,13 @@ const isTimeOccupied = async (time, room, id) => {
             q.Time(time[0]),
             q.Time(time[1]),
           ),
-          q.Lambda(['start', 'ref'], q.Match('tracks_by_ref', q.Var('ref'))),
+          q.Lambda(['end', 'ref'], q.Match('tracks_by_ref', q.Var('ref'))),
         ),
         q.Match(q.Index('booking_by_room'), room),
       ),
     ),
   )
+  console.log(data)
   if (id && data.length === 1 && data[0]?.id === id) {
     console.log('triggered')
     return false

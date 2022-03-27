@@ -926,7 +926,7 @@
   dependencies:
     "defer-to-connect" "^2.0.0"
 
-"@testing-library/dom@^8.0.0":
+"@testing-library/dom@^8.0.0", "@testing-library/dom@>=7.21.4":
   "integrity" "sha512-7vZ6ZoBEbr6bfEM89W1nzl0vHbuI0g0kRrI0hwSXH3epnuqGO3KulFLQCKfmmW+60t7e4sevAkJPASSMmnNCRw=="
   "resolved" "https://registry.npmjs.org/@testing-library/dom/-/dom-8.11.4.tgz"
   "version" "8.11.4"
@@ -963,6 +963,13 @@
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^8.0.0"
     "@types/react-dom" "*"
+
+"@testing-library/user-event@^13.5.0":
+  "integrity" "sha512-5Kwtbo3Y/NowpkbRuSepbyMFkZmHgD+vPzYB/RJ4oxt5Gj/avFFBYjhw27cqSVPVw/3a67NK1PbiIr9k4Gwmdg=="
+  "resolved" "https://registry.npmjs.org/@testing-library/user-event/-/user-event-13.5.0.tgz"
+  "version" "13.5.0"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 "@tootallnate/once@1":
   "integrity" "sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw=="
