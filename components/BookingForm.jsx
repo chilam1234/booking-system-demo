@@ -48,70 +48,45 @@ export default function BookingForm({
     );
   }, []);
 
-  const deleteBooking = useCallback(async () => {
-    try {
-      const response = await fetch("/api/deleteBooking", {
-        method: "DELETE",
-        body: JSON.stringify({ id: booking.id }),
-        headers: {
-          "Content-Type": "application/json",
+  const deleteBooking = useCallback(
+    async () =>
+      deleteBookingCb(
+        booking?.id,
+        () => {
+          router.push("/");
+          notifications.showNotification({
+            title: "Deleted the booking",
+            color: "blue",
+          });
         },
-      });
-      if (response.ok) {
-        router.push("/");
-        notifications.showNotification({
-          title: "Deleted the booking",
-          color: "blue",
-        });
-        return;
-      }
-      const err = await response.json();
-      notifications.showNotification({
-        title: "Cannot Delete Booking",
-        message: `${response.statusText}: ${err.msg}`,
-      });
-    } catch (err) {
-      console.error(err);
-      notifications.showNotification({
-        title: "Cannot Delete Booking",
-        message: err,
-      });
-    }
-  }, [booking]);
+        (err) => {
+          notifications.showNotification({
+            title: "Cannot Delete Booking",
+            message: err.msg ?? err,
+          });
+        }
+      ),
+    [booking]
+  );
 
   const updateBooking = useCallback(
-    async (data) => {
-      const { start, end, room, remarks } = data;
-      const id = booking.id;
-      try {
-        const response = await fetch("/api/updateBooking", {
-          method: "PUT",
-          body: JSON.stringify({ id, start, end, room, remarks }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (response.ok) {
+    async (data) =>
+      updateBookingCb(
+        { data, id: booking.id },
+        () => {
           notifications.showNotification({
             title: "Updated the booking",
             color: "blue",
           });
           router.push("/");
-          return;
+        },
+        (err) => {
+          notifications.showNotification({
+            title: "Cannot update Booking",
+            message: err.msg ?? err,
+          });
         }
-        const err = await response.json();
-        notifications.showNotification({
-          title: "Cannot Update Booking",
-          message: `${response.statusText}: ${err.msg}`,
-        });
-      } catch (err) {
-        notifications.showNotification({
-          title: "Cannot Update Booking",
-          message: err,
-        });
-        console.error(err);
-      }
-    },
+      ),
     [booking]
   );
   const RoomOptions = new Array(10).fill("").map((_, i) => {

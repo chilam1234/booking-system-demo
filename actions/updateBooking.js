@@ -1,6 +1,5 @@
-const updateBooking = async (data, successCallback, failedCallback) => {
+const updateBooking = async ({ data, id }, successCallback, failedCallback) => {
   const { start, end, room, remarks } = data
-  const id = booking.id
   try {
     const response = await fetch('/api/updateBooking', {
       method: 'PUT',
