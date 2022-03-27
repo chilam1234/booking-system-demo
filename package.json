@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.0.0",
@@ -34,6 +35,8 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^13.5.0",
+    "eslint": "8.12.0",
+    "eslint-config-next": "12.1.1",
     "jest": "^27.5.1",
     "msw": "^0.39.2",
     "next-router-mock": "^0.6.5",

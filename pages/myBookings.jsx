@@ -2,11 +2,11 @@ import React from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import useSWR from "swr";
 import Booking from "../components/Booking";
-import { withUser } from "../components/HOC/withUser";
+import { WithUser } from "../components/HOC/withUser";
 
 export default function MyBookings() {
   const { data: bookings } = useSWR("/api/myBookings");
-  const BookingWithUser = withUser(Booking);
+  const BookingWithUser = WithUser(Booking);
 
   return (
     <div>

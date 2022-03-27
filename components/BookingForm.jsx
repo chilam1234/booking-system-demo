@@ -28,25 +28,28 @@ export default function BookingForm({
   });
   const router = useRouter();
 
-  const createBooking = useCallback(async (data) => {
-    console.log(data);
-    await createBookingCb(
-      data,
-      () => {
-        router.push("/");
-        notifications.showNotification({
-          title: "Created the booking",
-          color: "blue",
-        });
-      },
-      (err) => {
-        notifications.showNotification({
-          title: "Cannot Create Booking",
-          message: `${err.msg ?? err}`,
-        });
-      }
-    );
-  }, []);
+  const createBooking = useCallback(
+    async (data) => {
+      console.log(data);
+      await createBookingCb(
+        data,
+        () => {
+          router.push("/");
+          notifications.showNotification({
+            title: "Created the booking",
+            color: "blue",
+          });
+        },
+        (err) => {
+          notifications.showNotification({
+            title: "Cannot Create Booking",
+            message: `${err.msg ?? err}`,
+          });
+        }
+      );
+    },
+    [createBookingCb, notifications, router]
+  );
 
   const deleteBooking = useCallback(
     async () =>
@@ -66,7 +69,7 @@ export default function BookingForm({
           });
         }
       ),
-    [booking]
+    [booking?.id, deleteBookingCb, notifications, router]
   );
 
   const updateBooking = useCallback(
@@ -87,7 +90,7 @@ export default function BookingForm({
           });
         }
       ),
-    [booking]
+    [booking?.id, notifications, router, updateBookingCb]
   );
   const RoomOptions = new Array(10).fill("").map((_, i) => {
     return (

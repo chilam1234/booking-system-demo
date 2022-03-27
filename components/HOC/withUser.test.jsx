@@ -1,4 +1,4 @@
-import { withUser } from "./withUser";
+import { WithUser } from "./withUser";
 import { UserProvider } from "@auth0/nextjs-auth0";
 import { render, screen } from "@testing-library/react";
 
@@ -11,17 +11,17 @@ jest.mock("@auth0/nextjs-auth0", () => {
     })),
   };
 });
-describe("withUser", () => {
+describe("WithUser", () => {
   it("should load user data to children component", () => {
     const Testing = ({ user, isLoading }) => (
       <>
         <p>{user.sub}</p> <p>isLoading: {`${isLoading}`}</p>
       </>
     );
-    const WithUser = withUser(Testing);
+    const WithLoadUser = WithUser(Testing);
     render(
       <UserProvider>
-        <WithUser />
+        <WithLoadUser />
       </UserProvider>
     );
     screen.getByText("123");

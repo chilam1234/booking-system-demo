@@ -30,3 +30,8 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## ToDo:
+1. add more features: sorting, filtering
+2. change to TS
+3. tests on backend

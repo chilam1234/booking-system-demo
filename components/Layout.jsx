@@ -9,11 +9,11 @@ import {
   Title,
 } from "@mantine/core";
 import { useState } from "react";
-import { withUser } from "../components/HOC/withUser";
+import { WithUser } from "../components/HOC/withUser";
 
 function Layout({ children }) {
   const [opened, setOpened] = useState(false);
-  const NavbarWithUser = withUser(NavbarContent);
+  const NavbarWithUser = WithUser(NavbarContent);
   const theme = useMantineTheme();
   return (
     <AppShell

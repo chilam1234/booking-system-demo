@@ -1,10 +1,10 @@
 import Booking from "../components/Booking";
 import useSWR from "swr";
-import { withUser } from "../components/HOC/withUser";
+import { WithUser } from "../components/HOC/withUser";
 
 export default function Home() {
   const { data: bookings } = useSWR("/api/bookings");
-  const BookingWithUser = withUser(Booking);
+  const BookingWithUser = WithUser(Booking);
   return (
     <div>
       <main className="">
