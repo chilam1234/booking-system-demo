@@ -71,6 +71,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Cannot Delete Booking",
             message: err.msg ?? err,
+            color: "red",
           });
         }
       ),
@@ -92,6 +93,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Cannot update Booking",
             message: err.msg ?? err,
+            color: "red",
           });
         }
       ),

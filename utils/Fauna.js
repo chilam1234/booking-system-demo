@@ -47,6 +47,27 @@ const getBookingsByUser = async (userId) => {
 
 const isTimeOccupied = async (time, room, id) => {
   console.log(time[0], time[1])
+  const { data: withinDate } = await faunaClient.query(
+    q.Map(
+      q.Filter(
+        q.Paginate(q.Documents(q.Collection('bookings'))),
+        q.Lambda(
+          'booking',
+          q.And(
+            q.GTE(q.Select(['data', 'end'], q.Get(q.Var('booking'))), time[1]),
+            q.LTE(
+              q.Select(['data', 'start'], q.Get(q.Var('booking'))),
+              time[0],
+            ),
+          ),
+        ),
+      ),
+      q.Lambda('ref', q.Get(q.Var('ref'))),
+    ),
+  )
+  if (withinDate.length > 0) {
+    return true
+  }
   const { data } = await faunaClient.query(
     q.Paginate(
       q.Intersection(
