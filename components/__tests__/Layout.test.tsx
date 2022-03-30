@@ -19,7 +19,7 @@ describe("Layout", () => {
     it("should render the following info", () => {
       const spy = jest
         .spyOn(Auth, "useUser")
-        .mockReturnValue({ user: { sub: 123 }, isLoading: false });
+        .mockReturnValue({ user: { sub: "123" }, isLoading: false } as any);
       render(
         <Layout>
           <p>Hello</p>
@@ -39,7 +39,7 @@ describe("Layout", () => {
     it("should render the following info", () => {
       const spy = jest
         .spyOn(Auth, "useUser")
-        .mockReturnValue({ isLoading: false });
+        .mockReturnValue({ isLoading: false } as any);
       render(
         <Layout>
           <p>Hello</p>

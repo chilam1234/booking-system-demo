@@ -36,7 +36,6 @@ export default function BookingForm({
   updateBookingCb,
   deleteBookingCb,
 }: BookingFormProps) {
-  console.log(newBooking);
   const router = useRouter();
   const notifications = useNotifications();
 
@@ -56,7 +55,6 @@ export default function BookingForm({
 
   const createBooking = useCallback(
     async (data) => {
-      console.log(data);
       await createBookingCb(
         data,
         () => {

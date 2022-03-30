@@ -20,7 +20,7 @@ describe("Navbar", () => {
     it("should render the these", () => {
       render(
         <UserProvider>
-          <Navbar user={{ sub: 123 }} isLoading={false} />
+          <Navbar user={{ sub: "123" }} isLoading={false} />
         </UserProvider>
       );
       expect(screen.getByText("My bookings")).toBeVisible();

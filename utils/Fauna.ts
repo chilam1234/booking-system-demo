@@ -25,7 +25,7 @@ const getBookingById = async (id: string) => {
   );
   booking.id = booking.ref.id;
   const { ref, ...noRefBooking } = booking;
-  console.log(noRefBooking);
+
   return noRefBooking;
 };
 
@@ -54,7 +54,6 @@ const isTimeOccupied = async ({
   room: string;
   id?: string;
 }) => {
-  console.log(time[0], time[1]);
   const { data: withinDate } = await faunaClient.query<any>(
     q.Map(
       q.Filter(
@@ -96,9 +95,7 @@ const isTimeOccupied = async ({
       )
     )
   );
-  console.log(data);
   if (id && data.length === 1 && data[0]?.id === id) {
-    console.log("triggered");
     return false;
   }
 

@@ -9,6 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useRouter } from "next/router";
 import { IBooking } from "../types";
 import { UserProfile } from "@auth0/nextjs-auth0";
+import isLaterOrEqualDateTime from "../utils/isLaterDateTime";
 
 type CalendarProps = {
   bookings: IBooking[];
@@ -20,19 +21,26 @@ export default function Calendar({ bookings, user }: CalendarProps) {
   const events = useMemo(
     () =>
       bookings?.map((booking) => ({
+        id: booking.id,
         ...booking.data,
         resourceId: booking.data.room,
         start: new Date(booking.data.start),
         end: new Date(booking.data.end),
+        userId: booking.data.userId,
       })),
     [bookings]
   );
-  console.log(events);
-  const resources = [
-    new Array(10).fill(0).map((_, i) => ({ id: `c${i}`, title: `Room c${i}` })),
-    new Array(10).fill(0).map((_, i) => ({ id: `p${i}`, title: `Room p${i}` })),
-  ].flat();
-  console.log(resources);
+  const resources = useMemo(
+    () =>
+      new Array(10)
+        .fill(0)
+        .map((_, i) => [
+          { id: `c${i}`, title: `Room c${i}` },
+          { id: `p${i}`, title: `Room p${i}` },
+        ])
+        .flat(),
+    []
+  );
   const defaultDate = useMemo(() => new Date(), []);
   const localizer = useMemo(() => luxonLocalizer(DateTime), []);
 
@@ -46,6 +54,9 @@ export default function Calendar({ bookings, user }: CalendarProps) {
 
   const onSelectSlot = useCallback(
     (slotInfo) => {
+      if (slotInfo.start < DateTime.now()) {
+        return;
+      }
       /**
        * prevent double click on same slot
        */
@@ -64,23 +75,39 @@ export default function Calendar({ bookings, user }: CalendarProps) {
     [router]
   );
 
+  const onSelectEvent = useCallback(
+    (event) => {
+      if (
+        isLaterOrEqualDateTime(
+          DateTime.now(),
+          DateTime.fromISO(event.start.toISOString())
+        )
+      ) {
+        return;
+      }
+      if (event.userId === user?.sub) {
+        router.push(`/edit/${event.id}`);
+      }
+    },
+    [user, router]
+  );
+
   return (
-    <div className="myCustomHeight">
-      <BigCalendar
-        defaultDate={defaultDate}
-        localizer={localizer}
-        events={events ?? []}
-        defaultView={Views.DAY}
-        views={["day"]}
-        step={30}
-        resources={resources}
-        resourcesIdAccessor="id"
-        toolbar={false}
-        timeslots={2}
-        titleAccessor="remarks"
-        onSelectSlot={onSelectSlot}
-        selectable={user ? "ignoreEvents" : false}
-      />
-    </div>
+    <BigCalendar
+      defaultDate={defaultDate}
+      localizer={localizer}
+      events={events ?? []}
+      defaultView={Views.DAY}
+      views={["day"]}
+      step={30}
+      resources={resources}
+      resourcesIdAccessor="id"
+      toolbar={false}
+      timeslots={2}
+      titleAccessor="remarks"
+      onSelectSlot={onSelectSlot}
+      selectable={user ? "ignoreEvents" : false}
+      onSelectEvent={onSelectEvent}
+    />
   );
 }

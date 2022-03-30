@@ -2,6 +2,8 @@ import { updateBooking, getBookingById } from "../../utils/Fauna";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import checkRole from "../../utils/checkRole";
 import { NextApiRequest, NextApiResponse } from "next";
+import { DateTime } from "luxon";
+import isLaterDateTime from "../../utils/isLaterDateTime";
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
@@ -15,6 +17,9 @@ export default withApiAuthRequired(async function handler(
   }
 
   const { id, start, end, room, remarks } = req.body;
+  if (isLaterDateTime(DateTime.now(), DateTime.fromISO(start))) {
+    res.status(400).json({ msg: "Start time should be later than now." });
+  }
   checkRole(session.user, res, room);
   const existingRecord = await getBookingById(id);
   if (!existingRecord || existingRecord.data.userId !== userId) {
