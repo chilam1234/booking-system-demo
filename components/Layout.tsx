@@ -1,4 +1,4 @@
-import NavbarContent from "../components/Navbar";
+import NavbarContent from "./Navbar";
 import {
   AppShell,
   Navbar,
@@ -8,10 +8,10 @@ import {
   useMantineTheme,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
-import { WithUser } from "../components/HOC/withUser";
+import { ReactNode, useState } from "react";
+import { WithUser } from "./HOC/withUser";
 
-function Layout({ children }) {
+function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const NavbarWithUser = WithUser(NavbarContent);
   const theme = useMantineTheme();

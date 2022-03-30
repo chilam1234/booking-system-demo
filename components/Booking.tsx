@@ -3,8 +3,14 @@ import React from "react";
 import Link from "next/link";
 
 import { TimeRangeInput } from "@mantine/dates";
+import { UserProfile } from "@auth0/nextjs-auth0";
+import { IBooking } from "../types";
 
-export default function Booking({ booking, user }) {
+type BookingProps = {
+  user: UserProfile;
+  booking: IBooking;
+};
+export default function Booking({ booking, user }: BookingProps) {
   return (
     <div className="bg-gray-100 p-4 rounded-md my-2 shadow-lg">
       <div className="flex items-center justify-between mb-2">
@@ -13,7 +19,7 @@ export default function Booking({ booking, user }) {
         </h2>
         <TimeRangeInput
           value={[new Date(booking?.data?.start), new Date(booking?.data?.end)]}
-          readOnly
+          disabled={true}
         />
       </div>
       <h3 className="text-md text-gray-800 font-bold mb-2">Remarks</h3>

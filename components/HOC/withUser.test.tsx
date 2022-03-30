@@ -1,5 +1,5 @@
 import { WithUser } from "./withUser";
-import { UserProvider } from "@auth0/nextjs-auth0";
+import { UserProvider, useUser } from "@auth0/nextjs-auth0";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("@auth0/nextjs-auth0", () => {
@@ -13,7 +13,10 @@ jest.mock("@auth0/nextjs-auth0", () => {
 });
 describe("WithUser", () => {
   it("should load user data to children component", () => {
-    const Testing = ({ user, isLoading }) => (
+    const Testing = ({
+      user,
+      isLoading,
+    }: Pick<ReturnType<typeof useUser>, "user" | "isLoading">) => (
       <>
         <p>{user.sub}</p> <p>isLoading: {`${isLoading}`}</p>
       </>

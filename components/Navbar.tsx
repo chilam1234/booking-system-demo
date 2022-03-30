@@ -1,7 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import { UserProfile } from "@auth0/nextjs-auth0";
 
-export default function Navbar({ user, isLoading }) {
+type NavbarProps = {
+  user: UserProfile;
+  isLoading: boolean;
+};
+export default function Navbar({ user, isLoading }: NavbarProps) {
   return (
     <>
       {!isLoading && !user && (

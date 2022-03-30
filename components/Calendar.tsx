@@ -1,10 +1,21 @@
-import { Calendar, luxonLocalizer, Views } from "react-big-calendar";
+import {
+  Calendar as BigCalendar,
+  luxonLocalizer,
+  Views,
+} from "react-big-calendar";
 import { DateTime } from "luxon";
 import { useMemo, useRef, useEffect, useCallback } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useRouter } from "next/router";
+import { IBooking } from "../types";
+import { UserProfile } from "@auth0/nextjs-auth0";
 
-export default function MyCalendar({ bookings, user }) {
+type CalendarProps = {
+  bookings: IBooking[];
+  user: UserProfile;
+};
+
+export default function Calendar({ bookings, user }: CalendarProps) {
   const router = useRouter();
   const events = useMemo(
     () =>
@@ -55,7 +66,7 @@ export default function MyCalendar({ bookings, user }) {
 
   return (
     <div className="myCustomHeight">
-      <Calendar
+      <BigCalendar
         defaultDate={defaultDate}
         localizer={localizer}
         events={events ?? []}

@@ -8,13 +8,34 @@ import { useNotifications } from "@mantine/notifications";
 import { validationsSchema } from "../utils/formValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import { IBooking, IBookingForm } from "../types";
+
+type BookingFormProps = {
+  booking: IBooking;
+  newBooking: Partial<IBookingForm>;
+  createBookingCb?: (
+    data: Partial<IBookingForm>,
+    successCb: () => void,
+    failCb: (err) => void
+  ) => void;
+  updateBookingCb?: (
+    data: Partial<IBookingForm> & { id: string },
+    successCb: () => void,
+    failCb: (err) => void
+  ) => void;
+  deleteBookingCb?: (
+    id: string,
+    successCb: () => void,
+    failCb: (err) => void
+  ) => void;
+};
 export default function BookingForm({
   booking,
   newBooking,
   createBookingCb,
   updateBookingCb,
   deleteBookingCb,
-}) {
+}: BookingFormProps) {
   console.log(newBooking);
   const router = useRouter();
   const notifications = useNotifications();
@@ -43,6 +64,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Created the booking",
             color: "blue",
+            message: "",
           });
         },
         (err) => {
@@ -65,6 +87,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Deleted the booking",
             color: "blue",
+            message: "",
           });
         },
         (err) => {
@@ -86,6 +109,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Updated the booking",
             color: "blue",
+            message: "",
           });
           router.push("/");
         },
@@ -128,7 +152,6 @@ export default function BookingForm({
         <Controller
           control={control}
           name="start"
-          rules={[{ required: true }]}
           render={({ field: { onChange, ref }, fieldState: { error } }) => (
             <>
               <TimeInput
@@ -153,7 +176,6 @@ export default function BookingForm({
         <Controller
           control={control}
           name="end"
-          rules={[{ required: true }]}
           render={({ field: { onChange, ref }, fieldState: { error } }) => (
             <>
               <TimeInput
@@ -187,7 +209,6 @@ export default function BookingForm({
         <Controller
           control={control}
           name="room"
-          rules={[{ required: true }]}
           render={({ field: { onChange }, fieldState: { error } }) => (
             <>
               <select
@@ -218,7 +239,7 @@ export default function BookingForm({
         <textarea
           name="remarks"
           id="remarks"
-          rows="3"
+          rows={3}
           className="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
           placeholder="remarks for your booking"
           {...register("remarks", { required: false })}
