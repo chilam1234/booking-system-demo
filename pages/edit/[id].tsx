@@ -3,8 +3,13 @@ import { getBookingById } from "../../utils/Fauna";
 import BookingForm from "../../components/BookingForm";
 import { Title } from "@mantine/core";
 import { updateBooking, deleteBooking } from "../../actions";
+import { IBooking } from "../../types";
 
-export default function Home({ booking }) {
+type HomeProps = {
+  booking: IBooking;
+};
+
+export default function Home({ booking }: HomeProps) {
   return (
     <div>
       <main className="max-w-lg mx-auto">

@@ -7,7 +7,7 @@ import { UserProfile } from "@auth0/nextjs-auth0";
 import { IBooking } from "../types";
 
 type BookingProps = {
-  user: UserProfile;
+  user?: UserProfile;
   booking: IBooking;
 };
 export default function Booking({ booking, user }: BookingProps) {
@@ -24,7 +24,7 @@ export default function Booking({ booking, user }: BookingProps) {
       </div>
       <h3 className="text-md text-gray-800 font-bold mb-2">Remarks</h3>
       <p className="text-gray-900 mb-4">{booking.data.remarks}</p>
-      {user && user.sub === booking.data.userId && (
+      {user?.sub === booking.data.userId && (
         <Link href={`/edit/${booking.id}`}>
           <a className="text-gray-800 mr-2">Edit</a>
         </Link>

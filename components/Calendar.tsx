@@ -12,7 +12,7 @@ import { UserProfile } from "@auth0/nextjs-auth0";
 
 type CalendarProps = {
   bookings: IBooking[];
-  user: UserProfile;
+  user?: UserProfile;
 };
 
 export default function Calendar({ bookings, user }: CalendarProps) {

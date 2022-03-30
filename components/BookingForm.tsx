@@ -11,8 +11,8 @@ import { useRouter } from "next/router";
 import { IBooking, IBookingForm } from "../types";
 
 type BookingFormProps = {
-  booking: IBooking;
-  newBooking: Partial<IBookingForm>;
+  booking?: IBooking;
+  newBooking?: Partial<IBookingForm>;
   createBookingCb?: (
     data: Partial<IBookingForm>,
     successCb: () => void,

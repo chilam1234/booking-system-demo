@@ -9,6 +9,9 @@ type NavbarProps = {
 export default function Navbar({ user, isLoading }: NavbarProps) {
   return (
     <>
+      <Link href="/">
+        <a className="text-grey-800 hover:text-blue-800 mb-3">Home</a>
+      </Link>
       {!isLoading && !user && (
         <Link href="/api/auth/login">
           <a className="text-grey-800 hover:text-blue-800 mb-3">Login</a>
