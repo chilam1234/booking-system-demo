@@ -1,4 +1,4 @@
-import { deleteBooking, getBookingById } from "../../utils/Fauna";
+import faunaDb from "../../utils/Fauna";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import checkRole from "../../utils/checkRole";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -7,6 +7,7 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { getBookingById, deleteBooking } = faunaDb();
   const session = getSession(req, res);
   const userId = session.user.sub;
 
@@ -16,7 +17,9 @@ export default withApiAuthRequired(async function handler(
 
   const { id } = req.body;
   const existingRecord = await getBookingById(id);
-  checkRole(session.user, res, existingRecord.data.room);
+  if (!checkRole(session.user, res, existingRecord.data.room)) {
+    return;
+  }
 
   if (!existingRecord || existingRecord.data.userId !== userId) {
     res.statusCode = 404;

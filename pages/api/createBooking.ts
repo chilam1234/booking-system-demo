@@ -1,4 +1,4 @@
-import { createBooking } from "../../utils/Fauna";
+import faunaDb from "../../utils/Fauna";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import checkRole from "../../utils/checkRole";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -9,6 +9,7 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { createBooking } = faunaDb();
   const session = getSession(req, res);
   const userId = session.user.sub;
   const { start, end, room, remarks } = req.body;
@@ -17,7 +18,9 @@ export default withApiAuthRequired(async function handler(
       .status(400)
       .json({ msg: "Start time should be later than now." });
   }
-  checkRole(session.user, res, room);
+  if (!checkRole(session.user, res, room)) {
+    return;
+  }
   if (req.method !== "POST") {
     return res.status(405).json({ msg: "Method not allowed" });
   }

@@ -1,4 +1,4 @@
-import { getBookingsByUser } from "../../utils/Fauna";
+import faunaDb from "../../utils/Fauna";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -6,6 +6,7 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { getBookingsByUser } = faunaDb();
   const session = getSession(req, res);
 
   if (req.method !== "GET") {

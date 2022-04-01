@@ -69,6 +69,7 @@ export default function BookingForm({
           notifications.showNotification({
             title: "Cannot Create Booking",
             message: `${err.msg ?? err}`,
+            color: "red",
           });
         }
       );

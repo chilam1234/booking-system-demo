@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getBookings } from "../../utils/Fauna";
+import faunaDb from "../../utils/Fauna";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,6 +8,7 @@ export default async function handler(
   if (req.method !== "GET") {
     return res.status(405);
   }
+  const { getBookings } = faunaDb();
   try {
     const bookings = await getBookings();
     return res.status(200).json(bookings);

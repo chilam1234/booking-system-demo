@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { getBookingById } from "../../utils/Fauna";
+import faunDb from "../../utils/Fauna";
 import BookingForm from "../../components/BookingForm";
 import { Title } from "@mantine/core";
 import { updateBooking, deleteBooking } from "../../actions";
@@ -26,6 +26,7 @@ export default function Home({ booking }: HomeProps) {
 
 export async function getServerSideProps(context) {
   try {
+    const { getBookingById } = faunDb();
     const id = context.params.id;
     const booking = await getBookingById(id);
     return {

@@ -14,5 +14,12 @@ services:
       - .env.development
     networks:
       - next_network
+  faunadb:
+    image: fauna/faunadb
+    networks:
+     - next_network
+    ports:
+      - "8443:8443"
+      - "8084:8084"
 networks:
   next_network:

@@ -1,4 +1,4 @@
-import { updateBooking, getBookingById } from "../../utils/Fauna";
+import faunaDb from "../../utils/Fauna";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import checkRole from "../../utils/checkRole";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -9,6 +9,7 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { getBookingById, updateBooking } = faunaDb();
   const session = getSession(req, res);
   const userId = session.user.sub;
 
@@ -20,7 +21,9 @@ export default withApiAuthRequired(async function handler(
   if (isLaterDateTime(DateTime.now(), DateTime.fromISO(start))) {
     res.status(400).json({ msg: "Start time should be later than now." });
   }
-  checkRole(session.user, res, room);
+  if (!checkRole(session.user, res, room)) {
+    return;
+  }
   const existingRecord = await getBookingById(id);
   if (!existingRecord || existingRecord.data.userId !== userId) {
     res.statusCode = 404;
