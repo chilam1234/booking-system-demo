@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import Link from "next/link";
 import { useCallback } from "react";
 import { TimeInput } from "@mantine/dates";
-import { Button } from "@mantine/core";
+import { Button, NativeSelect, Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { validationsSchema } from "../utils/formValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -122,6 +122,10 @@ export default function BookingForm({
       ),
     [booking?.id, notifications, router, updateBookingCb]
   );
+  const roomValues = Array(10)
+    .fill("")
+    .map((_, i) => [`c${i + 1}`, `p${i + 1}`])
+    .flat();
   const RoomOptions = new Array(10).fill("").map((_, i) => {
     return (
       <>
@@ -142,19 +146,13 @@ export default function BookingForm({
       )}
     >
       <div className="mb-4">
-        <label
-          className="block text-red-100 text-sm font-bold mb-1"
-          htmlFor="name"
-        >
-          Booking Time
-        </label>
         <Controller
           control={control}
           name="start"
           render={({ field: { onChange, ref }, fieldState: { error } }) => (
             <>
               <TimeInput
-                label="Start"
+                label="Start Time"
                 id="time"
                 defaultValue={
                   booking?.data?.start
@@ -165,10 +163,9 @@ export default function BookingForm({
                 }
                 onChange={onChange}
                 ref={ref}
+                required
+                error={error ? error.message : undefined}
               />
-              {error && (
-                <p className="font-bold text-red-600">{error.message}</p>
-              )}
             </>
           )}
         />
@@ -179,7 +176,7 @@ export default function BookingForm({
             <>
               <TimeInput
                 id="end"
-                label="End"
+                label="End Time"
                 defaultValue={
                   booking?.data?.end
                     ? new Date(booking.data.end)
@@ -189,60 +186,43 @@ export default function BookingForm({
                 }
                 onChange={onChange}
                 ref={ref}
+                required
+                error={error ? error.message : undefined}
               />
-              {error && (
-                <p className="font-bold text-red-600">{error.message}</p>
-              )}
             </>
           )}
         />
       </div>
       <div className="mb-4">
-        <label
-          className="block text-red-100 text-sm font-bold mb-1"
-          htmlFor="description"
-        >
-          Room
-        </label>
-
         <Controller
           control={control}
           name="room"
           render={({ field: { onChange }, fieldState: { error } }) => (
             <>
-              <select
+              <NativeSelect
                 defaultValue={
                   booking?.data?.room
                     ? booking?.data?.room
                     : newBooking?.room ?? "c1"
                 }
+                label="Room"
                 onChange={onChange}
-                className="w-full border bg-white rounded px-3 py-2 outline-none text-gray-700"
-              >
-                {RoomOptions}
-              </select>
-              {error && (
-                <p className="font-bold text-red-900">Room is required</p>
-              )}
+                data={roomValues}
+                required
+                error={error ? "Room is required" : undefined}
+              />
             </>
           )}
         />
       </div>
       <div className="mb-4">
-        <label
-          className="block text-red-100 text-sm font-bold mb-1"
-          htmlFor="remarks"
-        >
-          Remarks
-        </label>
-        <textarea
+        <Textarea
+          label="Remarks"
           name="remarks"
           id="remarks"
-          rows={3}
-          className="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-          placeholder="remarks for your booking"
+          placeholder="Remarks for your booking"
           {...register("remarks", { required: false })}
-        ></textarea>
+        />
       </div>
 
       <div className="flex items-center justify-between">

@@ -7,14 +7,22 @@ import {
   MediaQuery,
   useMantineTheme,
   Title,
+  ActionIcon,
+  Group,
+  useMantineColorScheme,
 } from "@mantine/core";
 import { ReactNode, useState } from "react";
 import { WithUser } from "./HOC/withUser";
+import { MainLinks } from "./MainLinks";
+import User from "./User";
+import { Sun, MoonStars } from "tabler-icons-react";
 
 function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
-  const NavbarWithUser = WithUser(NavbarContent);
+  const NavbarWithUser = WithUser(MainLinks);
+  const UserProfile = WithUser(User);
   const theme = useMantineTheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <AppShell
       navbarOffsetBreakpoint="sm"
@@ -25,25 +33,42 @@ function Layout({ children }: { children: ReactNode }) {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 300, lg: 400 }}
+          width={{ sm: 200, lg: 300 }}
         >
-          <NavbarWithUser />
+          <Navbar.Section grow mt="md">
+            <NavbarWithUser />
+          </Navbar.Section>
+          <Navbar.Section>
+            <UserProfile />
+          </Navbar.Section>
         </Navbar>
       }
       header={
         <Header height={60} p="md">
-          <div className="flex items-center h-full">
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
+          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <Burger
+              opened={opened}
+              onClick={() => setOpened((o) => !o)}
+              size="sm"
+              color={theme.colors.gray[6]}
+              mr="xl"
+            />
+          </MediaQuery>
+
+          <Group sx={{ height: "100%" }} px={20} position="apart">
             <Title order={3}>One Day Room Booking System</Title>
-          </div>
+            <ActionIcon
+              variant="default"
+              onClick={() => toggleColorScheme()}
+              size={30}
+            >
+              {colorScheme === "dark" ? (
+                <Sun size={16} />
+              ) : (
+                <MoonStars size={16} />
+              )}
+            </ActionIcon>
+          </Group>
         </Header>
       }
       styles={(theme) => ({

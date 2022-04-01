@@ -35,8 +35,8 @@ export default function Calendar({ bookings, user }: CalendarProps) {
       new Array(10)
         .fill(0)
         .map((_, i) => [
-          { id: `c${i}`, title: `Room c${i}` },
-          { id: `p${i}`, title: `Room p${i}` },
+          { id: `c${i + 1}`, title: `Room c${i + 1}` },
+          { id: `p${i + 1}`, title: `Room p${i + 1}` },
         ])
         .flat(),
     []
