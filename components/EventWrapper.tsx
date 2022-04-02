@@ -19,7 +19,8 @@ type EventWrapperProps = {
 };
 
 export default function EventWrapper({ event, children }: EventWrapperProps) {
-  const { title, className, style } = children?.props;
+  const { title, className, style, ref, onClick, onDoubleClick } =
+    children?.props;
   const customClass = `${className}`;
 
   const theme = useMantineTheme();
@@ -47,9 +48,7 @@ export default function EventWrapper({ event, children }: EventWrapperProps) {
       };
     }
   }, []);
-  console.log(
-    isLaterOrEqualDateTime(DateTime.now(), DateTime.fromJSDate(event.start))
-  );
+
   return (
     <Paper
       shadow="xs"
@@ -59,6 +58,9 @@ export default function EventWrapper({ event, children }: EventWrapperProps) {
       style={{
         ...styleOnColorScheme,
       }}
+      onClick={onClick}
+      onDoubleClick={onDoubleClick}
+      ref={ref}
     >
       {children.props.children}
     </Paper>

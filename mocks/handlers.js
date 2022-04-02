@@ -66,4 +66,7 @@ export const handlers = [
       }),
     )
   }),
+  rest.post('https://db.fauna.com/', (req, res, ctx) => {
+    return
+  }),
 ]

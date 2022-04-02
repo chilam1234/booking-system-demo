@@ -1,4 +1,4 @@
-import faunaDb from "../../utils/Fauna";
+import faunaDb from "../../server/Fauna";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import checkRole from "../../utils/checkRole";
 import { NextApiRequest, NextApiResponse } from "next";

@@ -1,5 +1,4 @@
-import Head from "next/head";
-import faunDb from "../../utils/Fauna";
+import faunDb from "../../server/Fauna";
 import BookingForm from "../../components/BookingForm";
 import { Title } from "@mantine/core";
 import { updateBooking, deleteBooking } from "../../actions";

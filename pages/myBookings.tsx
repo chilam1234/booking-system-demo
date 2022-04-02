@@ -3,13 +3,15 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import useSWR from "swr";
 import Booking from "../components/Booking";
 import { WithUser } from "../components/HOC/withUser";
+import { LoadingOverlay } from "@mantine/core";
 
 export default function MyBookings() {
   const { data: bookings } = useSWR("/api/myBookings");
   const BookingWithUser = WithUser(Booking);
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
+      <LoadingOverlay visible={bookings === undefined} />
       <main className="my-12">
         {bookings &&
           bookings.length > 0 &&

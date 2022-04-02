@@ -81,6 +81,7 @@ export default function Calendar({ bookings, user }: CalendarProps) {
 
   const onSelectEvent = useCallback(
     (event) => {
+      console.log(event);
       if (
         isLaterOrEqualDateTime(
           DateTime.now(),

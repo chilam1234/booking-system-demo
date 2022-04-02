@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import faunaDb from "../../utils/Fauna";
+import faunaDb from "../../server/Fauna";
 
 export default async function handler(
   req: NextApiRequest,
