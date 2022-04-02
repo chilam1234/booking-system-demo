@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Link from "next/link";
 import { useCallback } from "react";
@@ -122,22 +122,14 @@ export default function BookingForm({
       ),
     [booking?.id, notifications, router, updateBookingCb]
   );
-  const roomValues = Array(10)
-    .fill("")
-    .map((_, i) => [`c${i + 1}`, `p${i + 1}`])
-    .flat();
-  const RoomOptions = new Array(10).fill("").map((_, i) => {
-    return (
-      <>
-        <option key={`c${i + 1}`} value={`c${i + 1}`}>
-          c{i + 1}
-        </option>
-        <option key={`p${i + 1}`} value={`p${i + 1}`}>
-          p{i + 1}
-        </option>
-      </>
-    );
-  });
+  const roomValues = useMemo(
+    () =>
+      Array(10)
+        .fill("")
+        .map((_, i) => [`c${i + 1}`, `p${i + 1}`])
+        .flat(),
+    []
+  );
 
   return (
     <form

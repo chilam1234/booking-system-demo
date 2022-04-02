@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { IBooking } from "../types";
 import { UserProfile } from "@auth0/nextjs-auth0";
 import isLaterOrEqualDateTime from "../utils/isLaterDateTime";
+import { useMantineTheme, Text, Box } from "@mantine/core";
 
 type CalendarProps = {
   bookings: IBooking[];
@@ -17,6 +18,7 @@ type CalendarProps = {
 };
 
 export default function Calendar({ bookings, user }: CalendarProps) {
+  const theme = useMantineTheme();
   const router = useRouter();
   const events = useMemo(
     () =>
@@ -27,6 +29,7 @@ export default function Calendar({ bookings, user }: CalendarProps) {
         start: new Date(booking.data.start),
         end: new Date(booking.data.end),
         userId: booking.data.userId,
+        title: booking.data.username,
       })),
     [bookings]
   );
@@ -92,8 +95,39 @@ export default function Calendar({ bookings, user }: CalendarProps) {
     [user, router]
   );
 
+  const getStylePropsOnColorScheme = useCallback(() => {
+    if (theme.colorScheme === "dark") {
+      return {
+        style: {
+          backgroundColor: theme.colors.dark[4],
+          color: "white",
+        },
+      };
+    }
+    return {
+      style: {
+        backgroundColor: theme.colors.cyan[0],
+        borderColor: theme.colors.gray[4],
+        color: "black",
+      },
+    };
+  }, []);
+
   return (
     <BigCalendar
+      components={{
+        timeGutterHeader: () => (
+          <Box
+            sx={() => ({
+              width: "100%",
+              height: "100%",
+              ...getStylePropsOnColorScheme().style,
+            })}
+          >
+            <Text weight={700}> Time </Text>
+          </Box>
+        ),
+      }}
       defaultDate={defaultDate}
       localizer={localizer}
       events={events ?? []}
@@ -101,13 +135,15 @@ export default function Calendar({ bookings, user }: CalendarProps) {
       views={["day"]}
       step={30}
       resources={resources}
-      resourcesIdAccessor="id"
+      resourceIdAccessor="id"
       toolbar={false}
       timeslots={2}
-      titleAccessor="remarks"
+      titleAccessor="username"
       onSelectSlot={onSelectSlot}
       selectable={user ? "ignoreEvents" : false}
       onSelectEvent={onSelectEvent}
+      slotPropGetter={(date: Date) => getStylePropsOnColorScheme()}
+      dayPropGetter={(date: Date) => getStylePropsOnColorScheme()}
     />
   );
 }

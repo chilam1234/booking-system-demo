@@ -6,6 +6,7 @@ interface Booking {
     room: string;
     remarks: string;
     userId: string;
+    username: string;
   };
 }
 

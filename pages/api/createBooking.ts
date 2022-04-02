@@ -31,6 +31,7 @@ export default withApiAuthRequired(async function handler(
       room,
       remarks,
       userId,
+      username: session.user.name,
     });
     return res.status(200).json(createdBooking);
   } catch (err) {

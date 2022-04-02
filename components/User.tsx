@@ -15,7 +15,6 @@ type UserProps = {
 };
 export default function User({ user }: UserProps) {
   const theme = useMantineTheme();
-  console.log(theme);
 
   return (
     <Box

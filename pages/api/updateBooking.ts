@@ -38,6 +38,7 @@ export default withApiAuthRequired(async function handler(
       room,
       remarks,
       userId,
+      username: session.user.name,
     });
     return res.status(200).json(updated);
   } catch (err) {

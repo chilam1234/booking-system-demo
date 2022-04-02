@@ -55,7 +55,6 @@ const fuanaDB = (
     room: string;
     id?: string;
   }) => {
-    console.log(time[0], time[1]);
     const { data: withinDate } = await faunaClient.query<any>(
       q.Map(
         q.Filter(
@@ -98,14 +97,12 @@ const fuanaDB = (
       )
     );
     if (withinDate.length > 1) {
-      console.log(withinDate);
       return true;
     }
 
     if (withinDate.length === 1 && !id && withinDate[0]?.ref?.id !== id) {
       return true;
     }
-    console.log(time[0], time[1]);
     const { data } = await faunaClient.query<any>(
       q.Paginate(
         q.Intersection(
@@ -129,7 +126,6 @@ const fuanaDB = (
         )
       )
     );
-    console.log("triggered", data);
     if (id && data.length === 1 && data[0]?.id === id) {
       return false;
     }
@@ -143,12 +139,14 @@ const fuanaDB = (
     room,
     remarks,
     userId,
+    username,
   }: {
     start: string;
     end: string;
     room: string;
     remarks: string;
     userId: string;
+    username: string;
   }) => {
     if (await isTimeOccupied({ time: [start, end], room })) {
       throw new Error("Time is already occupied");
@@ -161,6 +159,7 @@ const fuanaDB = (
           room,
           remarks,
           userId,
+          username,
         },
       })
     );
@@ -173,6 +172,7 @@ const fuanaDB = (
     room,
     remarks,
     userId,
+    username,
   }: {
     id: string;
     start: string;
@@ -180,13 +180,14 @@ const fuanaDB = (
     room: string;
     remarks: string;
     userId: string;
+    username: string;
   }) => {
     if (await isTimeOccupied({ time: [start, end], room, id })) {
       throw new Error("Time is already occupied");
     }
     return await faunaClient.query(
       q.Update(q.Ref(q.Collection("bookings"), id), {
-        data: { start, end, room, remarks, userId },
+        data: { start, end, room, remarks, userId, username },
       })
     );
   };

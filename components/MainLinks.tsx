@@ -91,7 +91,6 @@ export function MainLinks({
   user: UserProfile;
   isLoading: boolean;
 }) {
-  console.log(user, isLoading);
   const links = data
     .filter((link) => link.display(isLoading, user))
     .map((link) => {
