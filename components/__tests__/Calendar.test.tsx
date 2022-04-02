@@ -15,12 +15,13 @@ describe("Calendar", () => {
               room: "c1",
               remarks: "happy",
               userId: "testingUser",
+              username: "testingUser",
             },
           },
         ]}
       />
     );
     expect(screen.getByText("Room c1")).toBeVisible();
-    expect(screen.getByText("happy")).toBeVisible();
+    expect(screen.getByText("testingUser")).toBeVisible();
   });
 });

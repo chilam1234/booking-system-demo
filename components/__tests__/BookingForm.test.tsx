@@ -1,5 +1,5 @@
 import { NotificationsProvider } from "@mantine/notifications";
-import { render, screen, waitFor } from "@testing-library/react";
+import { logRoles, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BookingForm from "../BookingForm";
 import { createBooking, updateBooking, deleteBooking } from "../../actions";
@@ -8,18 +8,18 @@ jest.mock("next/router", () => require("next-router-mock"));
 describe("BookingForm", () => {
   describe("when it is create booking", () => {
     it("should have a empty with default values", () => {
-      render(
+      const { container } = render(
         <NotificationsProvider>
           <BookingForm />
         </NotificationsProvider>
       );
-      expect(screen.getByText("Booking Time")).toBeVisible();
-      const start = screen.getByRole("textbox", { name: "Start" });
+      logRoles(container);
+      const start = screen.getByRole("textbox", { name: "Start Time *" });
       expect(start).toBeVisible();
       expect(start).toHaveValue("");
       expect(start).toHaveAttribute("placeholder", "--");
 
-      const end = screen.getByRole("textbox", { name: "End" });
+      const end = screen.getByRole("textbox", { name: "End Time *" });
       expect(end).toBeVisible();
       expect(end).toHaveValue("");
       expect(start).toHaveAttribute("placeholder", "--");
@@ -36,10 +36,10 @@ describe("BookingForm", () => {
       expect(remarks).toHaveValue("");
       expect(remarks).toHaveAttribute(
         "placeholder",
-        "remarks for your booking"
+        "Remarks for your booking"
       );
 
-      const roomSelect = screen.getByRole("combobox", { name: "" });
+      const roomSelect = screen.getByRole("combobox", { name: "Room *" });
       expect(roomSelect).toBeVisible();
       const roomOptions = screen.getAllByRole("option");
       expect(roomOptions.length).toBe(20);
@@ -79,9 +79,9 @@ describe("BookingForm", () => {
             <BookingForm createBookingCb={createBooking} />
           </NotificationsProvider>
         );
-        const start = screen.getByRole("textbox", { name: "Start" });
+        const start = screen.getByRole("textbox", { name: "Start Time *" });
         userEvent.type(start, "10");
-        const end = screen.getByRole("textbox", { name: "End" });
+        const end = screen.getByRole("textbox", { name: "End Time *" });
         userEvent.type(end, "11");
         const minutes = screen.getAllByRole("textbox", { name: "" });
         minutes.forEach((ele) => userEvent.type(ele, "00"));
@@ -98,16 +98,16 @@ describe("BookingForm", () => {
             <BookingForm createBookingCb={createBooking} />
           </NotificationsProvider>
         );
-        const start = screen.getByRole("textbox", { name: "Start" });
+        const start = screen.getByRole("textbox", { name: "Start Time *" });
         userEvent.type(start, "11");
-        const end = screen.getByRole("textbox", { name: "End" });
+        const end = screen.getByRole("textbox", { name: "End Time *" });
         userEvent.type(end, "10");
         const minutes = screen.getAllByRole("textbox", { name: "" });
         minutes.forEach((ele) => userEvent.type(ele, "00"));
         const save = screen.getByRole("button", { name: "Save" });
         userEvent.click(save);
         expect(
-          await screen.findByText("End must later than start")
+          await screen.findByText("End Time must be later than start")
         ).toBeVisible();
       });
     });
@@ -125,19 +125,18 @@ describe("BookingForm", () => {
                 room: "p1",
                 remarks: "asdasdasd",
                 userId: "google-oauth2|112017502625468671953",
+                username: "testing",
               },
               id: "327256303278752329",
             }}
           />
         </NotificationsProvider>
       );
-      expect(screen.getByText("Booking Time")).toBeVisible();
-      const start = screen.getByRole("textbox", { name: "Start" });
-      expect(start).toBeVisible();
+      const start = screen.getByRole("textbox", { name: "Start Time *" });
       expect(start).toHaveValue("01");
       expect(start).toHaveAttribute("placeholder", "--");
 
-      const end = screen.getByRole("textbox", { name: "End" });
+      const end = screen.getByRole("textbox", { name: "End Time *" });
       expect(end).toBeVisible();
       expect(end).toHaveValue("02");
       expect(start).toHaveAttribute("placeholder", "--");
@@ -154,10 +153,10 @@ describe("BookingForm", () => {
       expect(remarks).toHaveValue("asdasdasd");
       expect(remarks).toHaveAttribute(
         "placeholder",
-        "remarks for your booking"
+        "Remarks for your booking"
       );
 
-      const roomSelect = screen.getByRole("combobox", { name: "" });
+      const roomSelect = screen.getByRole("combobox", { name: "Room *" });
       expect(roomSelect).toBeVisible();
       const roomOptions = screen.getAllByRole("option");
       expect(roomOptions.length).toBe(20);
@@ -186,13 +185,13 @@ describe("BookingForm", () => {
           <NotificationsProvider>
             <BookingForm
               booking={{
-                ts: 1648354929210000,
                 data: {
                   start: "2022-03-26T17:00:00.555Z",
                   end: "2022-03-26T18:00:00.635Z",
                   room: "p1",
                   remarks: "asdasdasd",
                   userId: "google-oauth2|112017502625468671953",
+                  username: "test username",
                 },
                 id: "327256303278752329",
               }}
@@ -211,13 +210,13 @@ describe("BookingForm", () => {
           <NotificationsProvider>
             <BookingForm
               booking={{
-                ts: 1648354929210000,
                 data: {
                   start: "2022-03-26T17:00:00.555Z",
                   end: "2022-03-26T18:00:00.635Z",
                   room: "p1",
                   remarks: "asdasdasd",
                   userId: "google-oauth2|112017502625468671953",
+                  username: "test username",
                 },
                 id: "327256303278752329",
               }}
@@ -225,16 +224,16 @@ describe("BookingForm", () => {
             />
           </NotificationsProvider>
         );
-        const start = screen.getByRole("textbox", { name: "Start" });
+        const start = screen.getByRole("textbox", { name: "Start Time *" });
         userEvent.type(start, "11");
-        const end = screen.getByRole("textbox", { name: "End" });
+        const end = screen.getByRole("textbox", { name: "End Time *" });
         userEvent.type(end, "10");
         const minutes = screen.getAllByRole("textbox", { name: "" });
         minutes.forEach((ele) => userEvent.type(ele, "00"));
         const save = screen.getByRole("button", { name: "Save" });
         userEvent.click(save);
         expect(
-          await screen.findByText("End must later than start")
+          await screen.findByText("End Time must be later than start")
         ).toBeVisible();
       });
     });

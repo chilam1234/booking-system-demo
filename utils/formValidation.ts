@@ -1,8 +1,8 @@
-import * as yup from 'yup'
+import * as yup from "yup";
 
 const ErrorMsg = {
-  required: 'This field is required',
-}
+  required: "This field is required",
+};
 
 export const validationsSchema = yup
   .object({
@@ -13,6 +13,6 @@ export const validationsSchema = yup
       .date()
       .typeError(ErrorMsg.required)
       .required()
-      .min(yup.ref('start'), 'End must later than start'),
+      .min(yup.ref("start"), "End Time must be later than start"),
   })
-  .required()
+  .required();

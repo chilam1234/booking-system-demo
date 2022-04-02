@@ -10,7 +10,8 @@ import { useRouter } from "next/router";
 import { IBooking } from "../types";
 import { UserProfile } from "@auth0/nextjs-auth0";
 import isLaterOrEqualDateTime from "../utils/isLaterDateTime";
-import { useMantineTheme, Text, Box } from "@mantine/core";
+import { useMantineTheme, Text, Box, Paper } from "@mantine/core";
+import EventWrapper from "./EventWrapper";
 
 type CalendarProps = {
   bookings: IBooking[];
@@ -126,6 +127,9 @@ export default function Calendar({ bookings, user }: CalendarProps) {
           >
             <Text weight={700}> Time </Text>
           </Box>
+        ),
+        eventWrapper: ({ event, children }) => (
+          <EventWrapper event={event}>{children}</EventWrapper>
         ),
       }}
       defaultDate={defaultDate}
