@@ -3,6 +3,7 @@ import { Home, Book2, Books, Login, Logout } from "tabler-icons-react";
 import { ThemeIcon, UnstyledButton, Group, Text } from "@mantine/core";
 import Link from "next/link";
 import { UserProfile } from "@auth0/nextjs-auth0";
+import { motion } from "framer-motion";
 
 interface MainLinkProps {
   icon: React.ReactNode;
@@ -95,13 +96,15 @@ export function MainLinks({
     .filter((link) => link.display(isLoading, user))
     .map((link) => {
       return (
-        <NavbarLink
-          icon={link.icon}
-          color={link.color}
-          label={link.label}
-          href={link.href}
-          key={link.label}
-        />
+        <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} key={link.label}>
+          <NavbarLink
+            icon={link.icon}
+            color={link.color}
+            label={link.label}
+            href={link.href}
+            key={link.label}
+          />
+        </motion.div>
       );
     });
   return <div>{links}</div>;

@@ -24,6 +24,7 @@ function Layout({ children }: { children: ReactNode }) {
   const UserProfile = WithUser(User);
   const theme = useMantineTheme();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
   return (
     <AppShell
       navbarOffsetBreakpoint="sm"
