@@ -2,6 +2,8 @@ import { Paper, useMantineTheme } from "@mantine/core";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import isLaterOrEqualDateTime from "../utils/isLaterDateTime";
+import { Transition } from "@mantine/core";
+import { motion } from "framer-motion";
 
 type EventWrapperProps = {
   event: {
@@ -47,7 +49,14 @@ export default function EventWrapper({ event, children }: EventWrapperProps) {
           : theme.colors.gray[5],
       };
     }
-  }, []);
+  }, [
+    event.start,
+    style,
+    theme.colorScheme,
+    theme.colors.blue,
+    theme.colors.grape,
+    theme.colors.gray,
+  ]);
 
   return (
     <Paper
@@ -62,7 +71,9 @@ export default function EventWrapper({ event, children }: EventWrapperProps) {
       onDoubleClick={onDoubleClick}
       ref={ref}
     >
-      {children.props.children}
+      <motion.div animate={{ opacity: 1 }} whileHover={{ scale: 1.1 }}>
+        {children.props.children}
+      </motion.div>
     </Paper>
   );
 }
