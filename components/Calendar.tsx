@@ -81,7 +81,6 @@ export default function Calendar({ bookings, user }: CalendarProps) {
 
   const onSelectEvent = useCallback(
     (event) => {
-      console.log(event);
       if (
         isLaterOrEqualDateTime(
           DateTime.now(),
@@ -113,7 +112,12 @@ export default function Calendar({ bookings, user }: CalendarProps) {
         color: "black",
       },
     };
-  }, []);
+  }, [
+    theme.colorScheme,
+    theme.colors.cyan,
+    theme.colors.dark,
+    theme.colors.gray,
+  ]);
 
   return (
     <BigCalendar
@@ -149,6 +153,7 @@ export default function Calendar({ bookings, user }: CalendarProps) {
       onSelectEvent={onSelectEvent}
       slotPropGetter={(date: Date) => getStylePropsOnColorScheme()}
       dayPropGetter={(date: Date) => getStylePropsOnColorScheme()}
+      scrollToTime={DateTime.now().toJSDate()}
     />
   );
 }
