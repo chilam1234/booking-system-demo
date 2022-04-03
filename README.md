@@ -39,10 +39,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Docker Build
 1. create `.env.development` to store the env for build
-2. run `docker-compose up`
+2. run `docker-compose up -d nextjs`
+
+## Testing
+1. Run `sh fauna-test.sh`
+2. Make sure .env.test is here
 
 
 ## ToDo:
 1. add more features: sorting, filtering,...and many more
-2. change to TS
-3. tests on backend
