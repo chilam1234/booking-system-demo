@@ -1,4 +1,5 @@
 import "../styles/app.css";
+import "../styles/cube.css";
 import { UserProvider } from "@auth0/nextjs-auth0";
 import {
   ColorScheme,
