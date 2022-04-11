@@ -10,13 +10,17 @@ import {
   ActionIcon,
   Group,
   useMantineColorScheme,
+  Affix,
+  Transition,
+  Button,
 } from "@mantine/core";
 import { ReactNode, useState } from "react";
 import { WithUser } from "./HOC/withUser";
 import { MainLinks } from "./MainLinks";
 import User from "./User";
-import { Sun, MoonStars } from "tabler-icons-react";
+import { Sun, MoonStars, ArrowBackUp } from "tabler-icons-react";
 import { motion } from "framer-motion";
+import ScrollToTopButton from "./ScrollToTopButton.tsx";
 
 function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
@@ -93,6 +97,7 @@ function Layout({ children }: { children: ReactNode }) {
       })}
     >
       {children}
+      <ScrollToTopButton />
     </AppShell>
   );
 }
