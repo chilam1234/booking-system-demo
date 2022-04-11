@@ -33,7 +33,7 @@ const fuanaDB = (
   const getBookingsByUser = async (userId: string) => {
     const { data } = await faunaClient.query<any>(
       q.Map(
-        q.Paginate(q.Match(q.Index("bookings_by_user"), userId)),
+        q.Paginate(q.Match(q.Index("bookings_by_user_desc_2"), userId)),
         q.Lambda("ref", q.Get(q.Var("ref")))
       )
     );
