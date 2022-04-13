@@ -10,12 +10,17 @@ import { NotificationsProvider } from "@mantine/notifications";
 import NextNProgress from "nextjs-progressbar";
 import Head from "next/head";
 import Layout from "../components/Layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import notifyMe from "../utils/notification";
 
 function MyApp({ Component, pageProps }) {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+  useEffect(() => {
+    notifyMe();
+  }, []);
+
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
