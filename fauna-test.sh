@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-docker-compose up -d faunadb
+# docker-compose up -d faunadb
 
 echo n | fauna add-endpoint http://localhost:8443/ --alias localhost --key secret
 fauna create-database db_name --endpoint=localhost

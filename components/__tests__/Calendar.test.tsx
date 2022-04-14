@@ -1,10 +1,11 @@
 import { logRoles, render, screen } from "@testing-library/react";
 import Calendar from "../Calendar";
+import { DateTime } from "luxon";
 
 jest.mock("next/router", () => require("next-router-mock"));
 describe("Calendar", () => {
   it("should render with books", () => {
-    render(
+    const { container } = render(
       <Calendar
         bookings={[
           {
@@ -22,6 +23,15 @@ describe("Calendar", () => {
       />
     );
     expect(screen.getByText("Room c1")).toBeVisible();
-    expect(screen.getByText("testingUser")).toBeVisible();
+    expect(
+      screen.getByTitle(
+        new RegExp(
+          `${DateTime.now().hour}:${DateTime.now().minute} – ${
+            DateTime.now().hour
+          }:${DateTime.now().minute}`
+        )
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("testingUser")).toBeInTheDocument();
   });
 });

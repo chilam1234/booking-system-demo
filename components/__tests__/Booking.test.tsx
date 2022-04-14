@@ -12,6 +12,8 @@ describe("Booking", () => {
               end: "2011-10-10T18:48:00.000Z",
               room: "test room",
               remarks: "testing remarks",
+              userId: "test",
+              username: "test",
             },
           }}
           user={{ sub: "123" }}
@@ -51,6 +53,7 @@ describe("Booking", () => {
       expect(editBtn).toBeVisible();
       const times = screen.getAllByRole("textbox");
       expect(times.length).toBe(4);
+      console.log(times);
       expect(
         times.find(
           (ele) => ele.value === `${DateTime.now().plus({ minutes: 30 }).hour}`

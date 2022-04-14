@@ -29,7 +29,7 @@ describe("Layout", () => {
         </ColorSchemeProvider>
       );
       screen.debug();
-      expect(screen.getByText("One Day Room Booking System")).toBeVisible();
+      expect(screen.getByText("Bookr")).toBeVisible();
       expect(screen.getByText("Hello")).toBeVisible();
       expect(screen.getByText("My Bookings")).toBeVisible();
       expect(screen.getByText("New Booking")).toBeVisible();
@@ -50,7 +50,7 @@ describe("Layout", () => {
           </Layout>
         </ColorSchemeProvider>
       );
-      expect(screen.getByText("One Day Room Booking System")).toBeVisible();
+      expect(screen.getByText("Bookr")).toBeVisible();
       expect(screen.getByText("Hello")).toBeVisible();
       expect(screen.getByText("Login")).toBeVisible();
       spy.mockReset();
